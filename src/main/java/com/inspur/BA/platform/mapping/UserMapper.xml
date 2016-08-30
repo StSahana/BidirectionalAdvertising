@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.inspur.BA.platform.dao.UserMapper" >
+  <resultMap id="BaseResultMap" type="com.inspur.BA.platform.entity.User" >
+    <id column="user_id" property="userId" jdbcType="VARCHAR" />
+    <result column="real_name" property="realName" jdbcType="VARCHAR" />
+    <result column="password" property="password" jdbcType="VARCHAR" />
+    <result column="enable" property="enable" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+     <result column="role_Name" property="roleName" jdbcType="VARCHAR" />
+     <result column="role_id" property="roleId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    user_id, real_name, password, enable, create_time, description
+  </sql>
+  
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from auth_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </select>
+  
+   <select id="getAll" resultMap="BaseResultMap" parameterType="com.inspur.BA.platform.entity.User">
+    select 
+    a.user_id, a.real_name, a.password, a.enable, a.create_time, a.description,c.role_name,c.role_id
+    from auth_user a,auth_user_role b,auth_role c
+    <where>
+    		<if test="1==1">a.user_id=b.user_id
+				AND b.role_id=c.role_id</if>
+			<if test="userId !=null"> AND a.user_id LIKE concat('%',#{userId,jdbcType=VARCHAR},'%') </if>
+			<if test="realName !=null"> AND a.real_name LIKE concat('%',#{realName,jdbcType=VARCHAR},'%')</if>
+			<if test="enable !=null"> AND a.enable = #{enable,jdbcType=INTEGER} </if>
+			<if test="startTime !=null"> AND a.create_time <![CDATA[ >=]]>#{startTime,jdbcType=TIMESTAMP} </if>
+			<if test="endTime !=null"> AND a.create_time <![CDATA[ <=]]>#{endTime,jdbcType=TIMESTAMP}</if>
+	</where>
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from auth_user
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+   <delete id="deleteRoleByPrimaryKey" parameterType="java.lang.String" >
+    delete from auth_user_role
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.inspur.BA.platform.entity.User" >
+    insert into auth_user (user_id, real_name, password, 
+      enable, create_time, description
+      )
+    values (#{userId,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{enable,jdbcType=INTEGER}, #{createTime,jdbcType=TIMESTAMP}, #{description,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.inspur.BA.platform.entity.User" >
+    insert into auth_user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="realName != null" >
+        real_name,
+      </if>
+      <if test="password != null" >
+        password,
+      </if>
+      <if test="enable != null" >
+        enable,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null" >
+        #{enable,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <insert id="insertRole" parameterType="com.inspur.BA.platform.entity.User" >
+  INSERT INTO auth_user_role values(#{userId,jdbcType=VARCHAR},#{roleId,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.inspur.BA.platform.entity.User" >
+    update auth_user
+    <set >
+      <if test="realName != null" >
+        real_name = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="enable != null" >
+        enable = #{enable,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateRoleByPrimaryKeySelective" parameterType="com.inspur.BA.platform.entity.User" >
+    update auth_user_role
+    <set >
+      <if test="roleId != null" >
+        role_id = #{roleId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+  
+  <update id="updateByPrimaryKey" parameterType="com.inspur.BA.platform.entity.User" >
+    update auth_user
+    set real_name = #{realName,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      enable = #{enable,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=TIMESTAMP},
+      description = #{description,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.1//EN" "http://struts.apache.org/dtds/struts-2.1.dtd">
+<struts>
+	<!-- 设置Struts2的整体过滤器 -->
+	<package name="strutsIntercepter" extends="struts-default">
+		<interceptors>
+			<!-- 指定自己定义的拦截器 及其对应的类 -->
+			<interceptor name="adminIntercepter"
+				class="com.inspur.BA.help.intercepter.AdminIntercepter"></interceptor>
+			<!-- 设置整体的过滤拦截器 名称 -->
+			<interceptor-stack name="authorityIntercepter">
+				<!-- 加载Struts2默认的拦截器 -->
+				<interceptor-ref name="defaultStack"></interceptor-ref>
+				<!-- 加载自己定义的拦截器  -->
+				<interceptor-ref name="adminIntercepter"></interceptor-ref>
+			</interceptor-stack>
+		</interceptors>
+		<!-- 设置Struts2默认过滤器的名称 -->
+		<default-interceptor-ref name="authorityIntercepter"></default-interceptor-ref>
+		<!-- 默认值对应的跳转界面 -->
+		<global-results>
+			<result name="login_failed">/page/login.jsp</result>
+		</global-results>
+	</package>
+	
+	<!-- 
+		登录
+	 -->
+	<!-- 整体管理员模块的录模块 主要是设置登录页面的 登录不需要设置带有检测Session的过滤器 C -->
+	<package name="Admin_Login" extends="struts-default" namespace="">
+		<action name="login" class="com.inspur.BA.platform.controller.LoginAction" method="login">
+			<result name="login_success">/page/main.jsp</result>
+			<result name="login_failed">/page/login.jsp</result>
+			<result name="login_out">/page/login.jsp</result>
+		</action>
+	</package>
+	 
+	 <package name="Action" extends="strutsIntercepter" namespace="">
+	 	<action name="*In*" class="com.inspur.BA.platform.controller.{2}Action" method="{1}">
+	 		<result name="login_failed">/page/login.jsp</result>
+	 	</action>
+	 </package>
+</struts>    
