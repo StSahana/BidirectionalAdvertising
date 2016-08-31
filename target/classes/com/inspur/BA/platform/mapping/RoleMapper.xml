@@ -6,14 +6,18 @@
     <result column="role_name" property="roleName" jdbcType="VARCHAR" />
     <result column="create_time" property="createTime" jdbcType="TIMESTAMP" />
     <result column="description" property="description" jdbcType="VARCHAR" />
+    <collection property="authorities" ofType="String">  
+            <id column="authority_id" property="authorityId" jdbcType="VARCHAR" />
+    </collection>  
   </resultMap>
   <sql id="Base_Column_List" >
     role_id, role_name, create_time, description
   </sql>
   <select id="getAll" resultMap="BaseResultMap">
   	SELECT
-  	<include refid="Base_Column_List"/>
-  	FROM auth_role
+  	a.role_id, a.role_name, a.create_time, a.description,b.authority_id
+  	FROM auth_role a,auth_role_authority b
+  	WHERE a.role_id=b.role_id
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
     select 
@@ -21,10 +25,23 @@
     from auth_role
     where role_id = #{roleId,jdbcType=VARCHAR}
   </select>
+  <select id="selectByRoleName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from auth_role
+    where role_name = #{roleName,jdbcType=VARCHAR}
+  </select>
+  
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
     delete from auth_role
     where role_id = #{roleId,jdbcType=VARCHAR}
   </delete>
+  
+  <delete id="deleteAuthorityByPrimaryKey" parameterType="java.lang.String" >
+    delete from auth_role_authority
+    where role_id = #{roleId,jdbcType=VARCHAR}
+  </delete>
+  
   <insert id="insert" parameterType="com.inspur.BA.platform.entity.Role" >
     insert into auth_role (role_id, role_name, create_time, 
       description)
@@ -62,6 +79,14 @@
       </if>
     </trim>
   </insert>
+  
+  <insert id="insertAuthoritySelective" parameterType="com.inspur.BA.platform.entity.Role" >
+  INSERT INTO auth_role_authority VALUES 
+  <foreach collection="authorities" item="authorityId" open="" close="" separator=","> 
+  (#{roleId,jdbcType=VARCHAR},#{authorityId,jdbcType=VARCHAR})
+  </foreach>
+  </insert>
+  
   <update id="updateByPrimaryKeySelective" parameterType="com.inspur.BA.platform.entity.Role" >
     update auth_role
     <set >
@@ -77,6 +102,8 @@
     </set>
     where role_id = #{roleId,jdbcType=VARCHAR}
   </update>
+  
+ 
   <update id="updateByPrimaryKey" parameterType="com.inspur.BA.platform.entity.Role" >
     update auth_role
     set role_name = #{roleName,jdbcType=VARCHAR},

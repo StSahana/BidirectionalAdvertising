@@ -2,6 +2,7 @@ package com.inspur.BA.help.filter;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -44,6 +45,7 @@ public class JspFilter implements Filter{
 		HttpSession session = request.getSession();
         String requestUrl = request.getRequestURI();
         String objectName = request.getContextPath();
+       
         if(requestUrl.contains(".jsp")&&!requestUrl.contains(Constant.NO_Filter_JSP)
         		||requestUrl.contains(".html")){//如果请求资源
         	Object admin = session.getAttribute(Constant.USER_SESSION);

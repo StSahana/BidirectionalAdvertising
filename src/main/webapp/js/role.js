@@ -27,18 +27,21 @@ $(function () {
             {
                 width: 270,
                 title: '角色名称',
-                field: 'roleId',
+                field: 'roleName',
                 sortable: false
             },
             {
             	width: 300,
             	title: '创建时间',
-            	field: 'createTime'
+            	field: 'createTime',
+            	formatter:function(value, row, index){
+            		 return new Date(value).toLocaleString();
+            	}
             },
             {
                 width: 300,
                 title: '角色描述',
-                field: 'realName',
+                field: 'description',
                 sortable: false
             },
         ]],
@@ -49,7 +52,7 @@ $(function () {
     });
     
     /*
-     * 初始化角色列表
+     * 初始化权限
      */
     tree=$('#tree').tree({
     	url:window.location.pathname.split("/")[1]+"/getAllInAuthority.do",
@@ -86,7 +89,7 @@ $(function () {
 })
 
 /**
- * 添加用户
+ * 添加
  */
 var addRole = function(){
 	url=window.location.pathname.split("/")[1]+"/addInRole.do";
@@ -94,47 +97,45 @@ var addRole = function(){
 	$("#ff").form('clear');
     $("#add").dialog({
         title: '添加',
-        width:400,
-        height:360,
+        width:500,
         modal: true,
     });
 }
 
 /**
-*修改用户信息
+*修改
 */
 var editRole = function(){
 	//$("#ff").attr("action",window.location.pathname.split("/")[1]+"/editInrole.do");
 	url=window.location.pathname.split("/")[1]+"/editInRole.do";
 	var role=grid.datagrid('getSelected');
-	$.post(
-			window.location.pathname.split("/")[1]+"/getAllInAuthority.do",
-			{roleId:role.roleId},
-			function(data){
-				for(var i=0;i<data.length;i++){
-					$('#tree').tree('select',data[i]);
-				}	
-	})
 	if(role==null){
 		$.messager.alert('提示', '请选择一条记录进行操作!', 'info');
 		return;
 	}else{
+		$("#ff").form('load',{
+			"role.roleId":role.roleId,
+			"role.roleName":role.roleName,
+			"role.description":role.description,
+		});
+		$.each(role.authorities,function(name, value){
+			console.log(value);
+			var node = $('#tree').tree('find', value);
+			console.log(JSON.stringify(node));
+			$('#tree').tree('check', node.target);
+		});
 		$("#add").dialog({
 			title: '编辑',
 	        height:400,
-	        width:400,
+	        width:500,
 	        modal: true
 		});
-		$("#ff").form('load',{
-			"role.roleId":role.roleId,
-			"role.realName":role.realName,
-			"role.description":role.description
-		});
+		
 	}
 }
 
 /**
- * 删除用户
+ * 删除
  */
 var deleteRole=function(){
 	
@@ -168,21 +169,29 @@ var deleteRole=function(){
 
 function submit() {
 	o=getObj($('#ff'));
-	nodes=$("#tree").tree("getChecked");
-	var s=[];
-	 for(var i=0; i<nodes.length; i++){
-         s.push(nodes[i].authorityId);
-     }
-	 o.ids=s;
-    $('#ff').form('submit',{
+	$.post(url,o,function(r){
+		$("#add").dialog('close');
+		parent.$.messager.alert('提示', JSON.parse(r).msg, 'info');
+		grid.datagrid('reload');
+	},'json')
+    /*$('#ff').form('submit',{
     	url:url,
     	data:o,
+    	processData: false,
+    	onSubmit: function(){ 
+    		 if(o["role.authorities"]){
+    			 console.log(JSON.stringify(o)); 
+    			return true; 
+    		}else{
+    			return false;
+    			}
+    		 },
     	success:function(r){
     		$("#add").dialog('close');
     		parent.$.messager.alert('提示', JSON.parse(r).msg, 'info');
     		grid.datagrid('reload');
     	}
-    });
+    });*/
 }
 function cancel() {
     $('#ff').form('clear');
@@ -199,5 +208,14 @@ function getObj(form){
             }
         }
     });
+    nodes=$("#tree").tree("getChecked");
+    for(var i=0; i<nodes.length; i++){
+       o["role.authorities["+i+"]"]=nodes[i].authorityId;
+    }
+	/*var s=[];
+	 for(var i=0; i<nodes.length; i++){
+         s.push(nodes[i].authorityId);
+     }
+	 o["authorities"]=s;*/
     return o;
 }

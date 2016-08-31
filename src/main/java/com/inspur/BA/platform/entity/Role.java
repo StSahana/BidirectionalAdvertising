@@ -1,7 +1,9 @@
 package com.inspur.BA.platform.entity;
 
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class Role {
     private String roleId;
@@ -11,6 +13,8 @@ public class Role {
     private Date createTime;
 
     private String description;
+    
+    private List<String> authorities;
 
     public String getRoleId() {
         return roleId;
@@ -43,4 +47,16 @@ public class Role {
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
     }
+
+	public List<String> getAuthorities() {
+		return authorities;
+	}
+
+	public void setAuthorities(List<String> authorities) {
+		this.authorities = authorities;
+	}
+
+	
+    
+    
 }

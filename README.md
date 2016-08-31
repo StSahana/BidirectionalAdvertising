@@ -2,12 +2,14 @@
 
 登录界面
 
-  ![login](截图\login.png)
+  ![login](https://github.com/StSahana/BidirectionalAdvertising/blob/master/%E6%88%AA%E5%9B%BE/login.png)
 
 主页面
 
-![main](截图\main.png)
+![main](https://github.com/StSahana/BidirectionalAdvertising/blob/master/%E6%88%AA%E5%9B%BE/main.png)
 
 子页面
 
-![user](截图\user.png)
+![user](https://github.com/StSahana/BidirectionalAdvertising/blob/master/%E6%88%AA%E5%9B%BE/user.png)
+
+![role](https://github.com/StSahana/BidirectionalAdvertising/blob/master/%E6%88%AA%E5%9B%BE/role.png)

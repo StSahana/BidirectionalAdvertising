@@ -7,14 +7,7 @@
     padding:0 20px 0 20px;
     clear:both;
 }
-#left{
-    width:200px;
-    float:left;
-}
-#right{
-    width:200px;
-    float:left;
-}
+
 .bd{
     border-style:dotted;
     border-width:1px
