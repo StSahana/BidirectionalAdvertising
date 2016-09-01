@@ -3,13 +3,16 @@
 String path = request.getContextPath();
 String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.getServerPort()+path+"/";
 %>
-
+<%@ taglib prefix="s" uri="/struts-tags"%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
     <jsp:include page="common.jsp"></jsp:include>
-    <link rel="stylesheet" href="<%=path %>/css/authority.css"/>
+   <%--  <link rel="stylesheet" href="<%=path %>/css/authority.css"/> --%>
   	<script type="text/javascript" src="<%=path %>/js/authority.js"></script>
+  	<style type="text/css">
+  		
+  	</style>
   </head>
 	  
   <body>
@@ -25,13 +28,13 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
     </div>
     
     <!-- 数据展示 -->
-    <table id="grid" class="easyui-treegrid" style="height:92%"></table>
+    <table id="grid"  style="height:92%"></table>
     
     <!-- 对话框表单 -->
-    <div id="add" style="padding:40px 0px 0px 60px;overflow:hidden">
-      <form id="ff" authority="form" action=""  name="user" style="width:'90%'">
-		<table >
-		    <tr >
+    <div id="add" style="overflow:hidden;padding-top:20px">
+      <form id="ff"  method="post"  >
+		<table>
+		    <tr>
 		        <td >菜单名称：<input name="authority.authorityName" class="easyui-textbox" value="${authority.authorityName}" data-options="required:true" style="width: 200px;" />
 		            <input type="hidden" name="authority.authorityId" value="${authority.authorityId}" />
 		        </td>
@@ -42,6 +45,7 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		            </select>
 		        </td>
 		    </tr>
+		    <tr style="height:10px"/>
 		    <tr >
 		        <td>显示图标：<input  name="authority.iconCls" class="easyui-textbox" value="${authority.iconCls}" style="width: 200px;"/></td>
 		        <td>禁用：
@@ -50,17 +54,24 @@ String basePath = request.getScheme()+"://"+request.getServerName()+":"+request.
 		                <option value="1">正常</option>
 		            </select>
 		    </tr>
+		    <tr style="height:10px"/>
 		    <tr >
 		        <td colspan=2  >响应地址：<input name="authority.menuUrl" class="easyui-textbox" value="${authority.menuUrl}"  style="width: 330px;"/></td>
 		    </tr>
+		    <tr style="height:10px"/>
 		    <tr >
 		        <td colspan=2  >父级节点：<input id="parentId" name="authority.parentId" class="easyui-combotree"   style="width: 330px;"/></td>
 		    </tr>
+		    <tr style="height:10px"/>
+		    
 		    <tr >
 		        <td colspan=2  ><div>描述信息：</div ><div style="margin-top: -16px;margin-left: 79px;width: 100%;" ><textarea id="" rows=6 name="authority.description"   style="width: 330px;" >${authority.description}</textarea></div></td>
 		    </tr>
+		    <tr style="height:10px"/>
+		    
 		</table>
       </form>
       <div style="text-align:center;padding:5px 0"><a href="javascript:void(0)" onclick="submit()" class="easyui-linkbutton">确定</a><a href="javascript:void(0)" onclick="cancel()" class="easyui-linkbutton">清除</a></div>
+  </div>
   </body>
 </html>

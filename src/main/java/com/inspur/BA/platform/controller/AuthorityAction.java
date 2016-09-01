@@ -29,7 +29,10 @@ public class AuthorityAction extends BaseAction {
 	
 	private String userId;
 	private String authorityId;
-	
+	/**
+	 * 
+	 * @return 权限菜单
+	 */
 	public String getAll(){
 		if(this.userId==null){
 		User user = (User) this.getSession(Constant.USER_SESSION);
@@ -43,8 +46,11 @@ public class AuthorityAction extends BaseAction {
 		}
 		return null;
 	}
-
-	public String getComplele(){
+	/**
+	 * 
+	 * @return 权限菜单与功能菜单
+	 */
+	public String getComplete(){
 		try {
 			this.responseWriter(JSON.toJSONString(authorityService.getCompleteAuthorityList()));
 		} catch (Exception e) {
@@ -121,6 +127,16 @@ public class AuthorityAction extends BaseAction {
 			log.error(e.getMessage());
 		}
 		return null;
+	}
+
+	
+	
+	public Authority getAuthority() {
+		return authority;
+	}
+
+	public void setAuthority(Authority authority) {
+		this.authority = authority;
 	}
 
 	public String getUserId() {

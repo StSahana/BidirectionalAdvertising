@@ -13,3 +13,6 @@
 ![user](https://github.com/StSahana/BidirectionalAdvertising/blob/master/%E6%88%AA%E5%9B%BE/user.png)
 
 ![role](https://github.com/StSahana/BidirectionalAdvertising/blob/master/%E6%88%AA%E5%9B%BE/role.png)
+
+![authority](https://github.com/StSahana/BidirectionalAdvertising/blob/master/%E6%88%AA%E5%9B%BE/authority.png)
+
